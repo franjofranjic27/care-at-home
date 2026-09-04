@@ -1,0 +1,39 @@
+import { cookies } from "next/headers";
+import { DoctorCard } from "@/components/doctor/DoctorCard";
+import { DoctorMessageCard } from "@/components/doctor/DoctorMessageCard";
+import { MarkMessagesRead } from "@/components/doctor/MarkMessagesRead";
+import { ReviewStatusCard } from "@/components/doctor/ReviewStatusCard";
+import { Screen } from "@/components/layout/Screen";
+import { BackLink, SectionLabel } from "@/components/ui";
+import { readState } from "@/server/state";
+import { getDoctorView } from "@/server/store";
+
+export default async function DoctorPage() {
+  const now = new Date();
+  const state = readState(await cookies());
+  const view = getDoctorView(state, now);
+  const unreadIds = view.messages.filter((m) => !m.read).map((m) => m.id);
+
+  return (
+    <Screen>
+      <BackLink href="/" />
+      <h1>Mein Arzt</h1>
+
+      <DoctorCard doctor={view.doctor} />
+
+      <section className="flex flex-col gap-3" aria-labelledby="section-now">
+        <SectionLabel id="section-now">Gerade jetzt</SectionLabel>
+        <ReviewStatusCard doctor={view.doctor} status={view.status} vitalsSentAt={view.vitalsSentAt} now={now} />
+      </section>
+
+      <section className="flex flex-col gap-3" aria-labelledby="section-messages">
+        <SectionLabel id="section-messages">Nachrichten von {view.doctor.shortName}</SectionLabel>
+        {view.messages.map((message) => (
+          <DoctorMessageCard key={message.id} message={message} consultation={view.consultation} />
+        ))}
+      </section>
+
+      <MarkMessagesRead unreadIds={unreadIds} />
+    </Screen>
+  );
+}

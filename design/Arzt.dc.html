@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="de-CH">
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #FFFFFF; color: #1F2E33; font-family: 'Atkinson Hyperlegible', 'Segoe UI', system-ui, sans-serif; font-size: 18px; line-height: 1.4; -webkit-font-smoothing: antialiased; }
+    a { color: #0040F8; } a:hover { color: #0030BF; }
+    @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(0, 64, 248, 0.45); } 70% { box-shadow: 0 0 0 12px rgba(0, 64, 248, 0); } 100% { box-shadow: 0 0 0 0 rgba(0, 64, 248, 0); } }
+    .pulse { animation: pulse 2s ease-out infinite; }
+  </style>
+</helmet>
+<div style="width: 390px; min-height: 1240px; background: #FFFFFF; display: flex; flex-direction: column; padding: 20px 24px 32px 24px; gap: 22px;">
+
+  <div style="height: 48px; display: flex; align-items: center; gap: 8px; color: #0040F8; font-size: 18px; font-weight: 700;">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"></path></svg>
+    <span>Zurück</span>
+  </div>
+
+  <h1 style="margin: 0; font-size: 28px; font-weight: 700; line-height: 1.2;">Mein Arzt</h1>
+
+  <div style="border: 2px solid #D5DDE2; border-radius: 16px; padding: 18px; display: flex; align-items: center; gap: 16px;">
+    <div style="width: 64px; height: 64px; border-radius: 32px; background: #E8EDFF; color: #0040F8; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 700; flex-shrink: 0;">AK</div>
+    <div style="display: flex; flex-direction: column; gap: 4px;">
+      <div style="font-size: 20px; font-weight: 700;">Dr. med. Anna Keller</div>
+      <div style="font-size: 16px; color: #5C6F75; line-height: 1.35;">Kardiologie · Kantonsspital St. Gallen</div>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 12px;">
+    <div style="font-size: 17px; font-weight: 700; color: #5C6F75;">Gerade jetzt</div>
+    <div style="border: 2px solid #0040F8; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 12px;">
+      <div style="display: flex; align-items: center; gap: 14px;">
+        <div class="pulse" style="width: 20px; height: 20px; border-radius: 10px; background: #0040F8; flex-shrink: 0; margin-left: 4px;"></div>
+        <div style="font-size: 21px; font-weight: 700;">Ihre Werte werden geprüft</div>
+      </div>
+      <div style="font-size: 18px; line-height: 1.4;">Dr. Keller schaut sich Ihre Werte von heute Morgen an. Sie erhalten eine Nachricht, sobald Dr. Keller fertig ist.</div>
+      <div style="font-size: 16px; color: #5C6F75;">Werte gesendet um 08:05 Uhr</div>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 12px;">
+    <div style="font-size: 17px; font-weight: 700; color: #5C6F75;">Nachrichten von Dr. Keller</div>
+
+    <div style="background: #E6F4EA; border: 2px solid #1B873F; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 12px;">
+      <div style="display: flex; align-items: center; justify-content: space-between;">
+        <div style="width: 40px; height: 40px; border-radius: 20px; background: #1B873F; color: #FFFFFF; display: flex; align-items: center; justify-content: center;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+        </div>
+        <div style="font-size: 16px; color: #5C6F75;">2. September</div>
+      </div>
+      <div style="font-size: 21px; font-weight: 700; line-height: 1.25;">Ihre Werte sehen gut aus. Sie müssen nicht ins Spital.</div>
+      <div style="font-size: 18px; line-height: 1.4;">INR und Nierenwerte sind im Zielbereich. Weiter so! Die nächste Blutentnahme ist am 7. September.</div>
+    </div>
+
+    <div style="background: #FFF4E0; border: 2px solid #B26A00; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 14px;">
+      <div style="display: flex; align-items: center; justify-content: space-between;">
+        <div style="width: 40px; height: 40px; border-radius: 20px; background: #B26A00; color: #FFFFFF; display: flex; align-items: center; justify-content: center;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M16 3v4M8 3v4M3 10h18"></path></svg>
+        </div>
+        <div style="font-size: 16px; color: #5C6F75;">20. August</div>
+      </div>
+      <div style="font-size: 21px; font-weight: 700; line-height: 1.25;">Bitte kommen Sie zur Besprechung vorbei.</div>
+      <div style="font-size: 18px; line-height: 1.4;">Ihr Gewicht ist in drei Tagen um 2 kg gestiegen. Das möchte ich mit Ihnen besprechen. Kein Grund zur Sorge.</div>
+      <div style="height: 60px; border-radius: 14px; background: #0040F8; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 700;">Termin auswählen</div>
+    </div>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "artboards": [
+    { "file": "Login.dc.html", "title": "1 · Anmelden", "x": 0, "y": 0, "w": 390, "h": 844 },
+    { "file": "Main.dc.html", "title": "2 · Übersicht", "x": 480, "y": 0, "w": 390, "h": 1040 },
+    { "file": "Termin.dc.html", "title": "3 · Termin buchen", "x": 960, "y": 0, "w": 390, "h": 1180 },
+    { "file": "TerminBestaetigt.dc.html", "title": "4 · Termin gebucht", "x": 1440, "y": 0, "w": 390, "h": 844 },
+    { "file": "Arzt.dc.html", "title": "5 · Mein Arzt", "x": 0, "y": 1340, "w": 390, "h": 1240 },
+    { "file": "Besprechung.dc.html", "title": "6 · Besprechung vereinbaren", "x": 480, "y": 1340, "w": 390, "h": 1080 },
+    { "file": "Infos.dc.html", "title": "7 · Meine Gesundheit", "x": 960, "y": 1340, "w": 390, "h": 1220 }
+  ],
+  "annotations": [
+    { "id": "entwurf-hinweis", "x": 0, "y": -220, "w": 560, "text": "Care@Home Patienten-App · Erster Entwurf\nFarben aus dem Pitch-Deck: Blau #0040F8, Weiss, Text #1F2E33, Flächen #E8EDFF.\nElderly-first: Schrift ab 17 px, Knöpfe ab 60 px, ein Thema pro Bildschirm, immer ein grosser Zurück-Knopf, Sie-Form, kurze Sätze." },
+    { "id": "flow-hinweis", "x": 620, "y": -220, "w": 520, "text": "Ablauf: Anmelden → Übersicht → Termin buchen → Termin gebucht.\nÜbersicht → Mein Arzt → Termin auswählen (bei gelber Nachricht) → Besprechung wählen.\nÜbersicht → Meine Gesundheit." },
+    { "id": "ampel-hinweis", "x": 1440, "y": 1340, "w": 380, "text": "Ampel-Logik (aus dem Pitch): Grün = «Werte gut, kein Spital nötig». Gelb = «Bitte zur Besprechung vorbei» mit Terminwahl. Blau pulsierend = Arzt prüft gerade." }
+  ],
+  "launch": { "view": "canvas" }
+}
