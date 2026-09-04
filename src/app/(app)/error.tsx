@@ -1,10 +1,12 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { Screen } from "@/components/layout/Screen";
 import { Button, ErrorNote, LinkButton } from "@/components/ui";
-import { api, describeError } from "@/lib/api";
+import { api } from "@/lib/api";
+import { useErrorMessage } from "@/lib/useErrorMessage";
 
 interface ErrorPageProps {
   readonly error: Error & { digest?: string };
@@ -18,6 +20,9 @@ interface ErrorPageProps {
  */
 export default function AppError({ error, reset }: ErrorPageProps) {
   const router = useRouter();
+  const t = useTranslations("error");
+  const tCommon = useTranslations("common");
+  const describeError = useErrorMessage();
   const [pending, setPending] = useState(false);
   const [resetError, setResetError] = useState<string | null>(null);
 
@@ -40,25 +45,22 @@ export default function AppError({ error, reset }: ErrorPageProps) {
 
   return (
     <Screen>
-      <h1>Etwas hat nicht geklappt</h1>
-      <p>
-        Die Seite konnte nicht geladen werden. Sie können die Demo-Daten zurücksetzen oder es noch einmal
-        versuchen.
-      </p>
+      <h1>{t("title")}</h1>
+      <p>{t("body")}</p>
 
       <ErrorNote message={resetError} />
 
       <Button onClick={resetDemo} disabled={pending}>
-        {pending ? "Wird zurückgesetzt …" : "Demo-Daten zurücksetzen"}
+        {pending ? t("resetting") : t("resetDemo")}
       </Button>
       <Button variant="secondary" onClick={reset} disabled={pending}>
-        Noch einmal versuchen
+        {t("retry")}
       </Button>
 
       <div className="grow" />
 
       <LinkButton href="/login" variant="text">
-        Zur Anmeldung
+        {tCommon("toLogin")}
       </LinkButton>
     </Screen>
   );

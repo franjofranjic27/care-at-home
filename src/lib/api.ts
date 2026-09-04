@@ -2,24 +2,35 @@
  * Kleiner Client für die simulierten API-Routen. Wird nur aus
  * Client-Komponenten verwendet.
  */
+import type { Locale } from "@/i18n/config";
 import type { Appointment, ConsultationChannel, Scenario } from "@/server/domain";
 import type { BookAppointmentInput } from "@/server/store";
 
 export class ApiError extends Error {
+  /**
+   * @param serverMessage Bereits übersetzte Meldung aus der JSON-Antwort
+   *   (`error`), oder `null`, wenn die Antwort keine enthielt.
+   */
   constructor(
     readonly status: number,
-    message: string,
+    readonly serverMessage: string | null,
   ) {
-    super(message);
+    super(serverMessage ?? `Request failed with status ${status}`);
     this.name = "ApiError";
   }
 }
 
-const GENERIC_ERROR = "Etwas hat nicht geklappt. Bitte versuchen Sie es noch einmal.";
+/** Liefert die Meldung des Servers, sonst den übergebenen (übersetzten) Ersatztext. */
+export function describeError(error: unknown, fallback: string): string {
+  return error instanceof ApiError && error.serverMessage ? error.serverMessage : fallback;
+}
 
-/** Liefert eine verständliche Fehlermeldung für die Anzeige. */
-export function describeError(error: unknown): string {
-  return error instanceof ApiError ? error.message : GENERIC_ERROR;
+function extractServerMessage(payload: unknown): string | null {
+  if (typeof payload === "object" && payload !== null && "error" in payload) {
+    const { error } = payload as { error: unknown };
+    return typeof error === "string" && error.length > 0 ? error : null;
+  }
+  return null;
 }
 
 async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
@@ -30,11 +41,7 @@ async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
   });
   const payload: unknown = await response.json().catch(() => null);
   if (!response.ok) {
-    const message =
-      typeof payload === "object" && payload !== null && "error" in payload
-        ? String((payload as { error: unknown }).error)
-        : GENERIC_ERROR;
-    throw new ApiError(response.status, message);
+    throw new ApiError(response.status, extractServerMessage(payload));
   }
   return payload as T;
 }
@@ -51,6 +58,7 @@ export interface LoginRequest {
 export const api = {
   login: (input: LoginRequest) => post<{ ok: true }>("/api/login", input),
   logout: () => post<{ ok: true }>("/api/logout"),
+  setLocale: (locale: Locale) => post<{ ok: true; locale: Locale }>("/api/locale", { locale }),
   createAppointment: (input: BookAppointmentInput) =>
     post<{ appointment: Appointment }>("/api/appointments", input),
   cancelAppointment: (id: string) =>

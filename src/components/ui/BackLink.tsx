@@ -5,11 +5,12 @@ import { FOCUS_RING } from "./focus";
 
 export interface BackLinkProps {
   readonly href: string;
-  readonly label?: string;
+  /** Übersetzter Text, z. B. «Zurück» oder «Zur Übersicht». */
+  readonly label: string;
 }
 
 /** Grosser Zurück-Link am Seitenanfang (60 px hoch). */
-export function BackLink({ href, label = "Zurück" }: BackLinkProps) {
+export function BackLink({ href, label }: BackLinkProps) {
   return (
     <Link
       href={href}

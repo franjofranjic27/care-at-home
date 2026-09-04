@@ -1,16 +1,23 @@
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 import { LoginForm } from "@/components/auth/LoginForm";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { BrandLogo } from "@/components/layout/BrandLogo";
 import { Screen } from "@/components/layout/Screen";
 import { FOCUS_RING } from "@/components/ui";
 import { cx } from "@/lib/cx";
 
-export default function LoginPage() {
+export default async function LoginPage() {
+  const t = await getTranslations();
+
   return (
     <Screen padding="none">
       <header className="flex flex-col gap-3.5 bg-brand px-7 pt-16 pb-10 text-white">
-        <BrandLogo variant="hero" />
-        <p className="text-lead text-brand-tint">Die Untersuchung kommt zu Ihnen nach Hause.</p>
+        <div className="flex items-center justify-between gap-3">
+          <BrandLogo variant="hero" />
+          <LanguageSwitcher variant="hero" />
+        </div>
+        <p className="text-lead text-brand-tint">{t("common.tagline")}</p>
       </header>
 
       <div className="flex grow flex-col gap-5 px-7 pt-7 pb-5">
@@ -18,7 +25,7 @@ export default function LoginPage() {
       </div>
 
       <footer className="flex flex-col gap-3 px-7 pb-8">
-        <p className="text-small text-muted">Ihre Spitex hilft Ihnen gerne beim ersten Anmelden.</p>
+        <p className="text-small text-muted">{t("login.spitexHelp")}</p>
         <Link
           href="/demo"
           className={cx(
@@ -26,7 +33,7 @@ export default function LoginPage() {
             FOCUS_RING,
           )}
         >
-          Demo-Steuerung
+          {t("login.demoLink")}
         </Link>
       </footer>
     </Screen>

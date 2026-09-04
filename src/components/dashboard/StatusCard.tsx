@@ -1,8 +1,8 @@
+import { getLocale, getTranslations } from "next-intl/server";
 import { CalendarIcon, CheckIcon } from "@/components/icons";
 import { ReviewingCard } from "@/components/doctor/ReviewingCard";
 import { ArrowLink, Card, IconCircle, LinkButton } from "@/components/ui";
 import { formatInstantDayMonth, formatWeekdayDayMonth } from "@/lib/dates";
-import { CHANNEL_LABELS } from "@/lib/labels";
 import type { Doctor, DoctorMessage, TrafficLight } from "@/server/domain";
 import type { ConsultationView } from "@/server/store";
 
@@ -14,14 +14,22 @@ export interface StatusCardProps {
 }
 
 /** Ampel-Karte auf der Übersicht: grün, gelb oder blau (Arzt prüft gerade). */
-export function StatusCard({ trafficLight, doctor, latestMessage, consultation }: StatusCardProps) {
+export async function StatusCard({ trafficLight, doctor, latestMessage, consultation }: StatusCardProps) {
+  const [locale, t, tLabels] = await Promise.all([
+    getLocale(),
+    getTranslations("dashboard.status"),
+    getTranslations("labels"),
+  ]);
+
   if (trafficLight === "blue") {
     return (
       <ReviewingCard doctor={doctor} headingLevel="h2">
-        <ArrowLink href="/arzt">Mehr erfahren</ArrowLink>
+        <ArrowLink href="/arzt">{t("learnMore")}</ArrowLink>
       </ReviewingCard>
     );
   }
+
+  const messageDate = latestMessage ? formatInstantDayMonth(latestMessage.dateISO, locale) : null;
 
   if (trafficLight === "yellow") {
     return (
@@ -30,24 +38,27 @@ export function StatusCard({ trafficLight, doctor, latestMessage, consultation }
           <IconCircle tone="warn">
             <CalendarIcon size={26} strokeWidth={2.2} />
           </IconCircle>
-          <h2 className="text-card-title font-bold">Bitte zur Besprechung</h2>
+          <h2 className="text-card-title font-bold">{t("consultation.title")}</h2>
         </div>
         <p>
-          {doctor.name} möchte etwas mit Ihnen besprechen
-          {latestMessage ? ` (Nachricht vom ${formatInstantDayMonth(latestMessage.dateISO)})` : ""}. Kein Grund
-          zur Sorge.
+          {messageDate
+            ? t("consultation.bodyDated", { doctor: doctor.name, date: messageDate })
+            : t("consultation.body", { doctor: doctor.name })}
         </p>
         {consultation ? (
           <p className="font-bold">
-            Ihre Besprechung: {formatWeekdayDayMonth(consultation.slot.dateISO)}, {consultation.slot.time} Uhr ·{" "}
-            {CHANNEL_LABELS[consultation.channel].label}
+            {t("consultation.arranged", {
+              date: formatWeekdayDayMonth(consultation.slot.dateISO, locale),
+              time: consultation.slot.time,
+              channel: tLabels(`channel.${consultation.channel}.label`),
+            })}
           </p>
         ) : (
           <LinkButton href="/arzt/besprechung" className="min-h-15 text-tile">
-            Termin auswählen
+            {t("chooseTime")}
           </LinkButton>
         )}
-        <ArrowLink href="/arzt">Nachricht lesen</ArrowLink>
+        <ArrowLink href="/arzt">{t("readMessage")}</ArrowLink>
       </Card>
     );
   }
@@ -58,14 +69,14 @@ export function StatusCard({ trafficLight, doctor, latestMessage, consultation }
         <IconCircle tone="ok">
           <CheckIcon size={28} />
         </IconCircle>
-        <h2 className="text-card-title font-bold">Ihre Werte sehen gut aus</h2>
+        <h2 className="text-card-title font-bold">{t("good.title")}</h2>
       </div>
       <p>
-        {doctor.name} hat Ihre Werte
-        {latestMessage ? ` am ${formatInstantDayMonth(latestMessage.dateISO)}` : ""} geprüft. Sie müssen nicht ins
-        Spital.
+        {messageDate
+          ? t("good.bodyDated", { doctor: doctor.name, date: messageDate })
+          : t("good.body", { doctor: doctor.name })}
       </p>
-      <ArrowLink href="/arzt">Nachricht lesen</ArrowLink>
+      <ArrowLink href="/arzt">{t("readMessage")}</ArrowLink>
     </Card>
   );
 }

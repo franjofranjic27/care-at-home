@@ -1,3 +1,4 @@
+import { LOCALES, type Locale } from "@/i18n/config";
 import { isIsoDate } from "@/lib/dates";
 import {
   APPOINTMENT_SLOTS,
@@ -7,7 +8,7 @@ import {
   SCENARIOS,
   type Scenario,
 } from "./domain";
-import { ValidationError } from "./errors";
+import { ValidationError, type ApiErrorKey } from "./errors";
 import type { BookAppointmentInput, ConsultationInput } from "./store";
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -16,25 +17,21 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 
 function requireRecord(body: unknown): Record<string, unknown> {
   if (!isRecord(body)) {
-    throw new ValidationError("Die Anfrage ist ungültig.");
+    throw new ValidationError("invalidRequest");
   }
   return body;
 }
 
-function requireOneOf<T extends string>(
-  value: unknown,
-  allowed: readonly T[],
-  message: string,
-): T {
+function requireOneOf<T extends string>(value: unknown, allowed: readonly T[], errorKey: ApiErrorKey): T {
   if (!isOneOf(value, allowed)) {
-    throw new ValidationError(message);
+    throw new ValidationError(errorKey);
   }
   return value;
 }
 
-function requireText(value: unknown, message: string): string {
+function requireText(value: unknown, errorKey: ApiErrorKey): string {
   if (typeof value !== "string" || value.trim().length === 0) {
-    throw new ValidationError(message);
+    throw new ValidationError(errorKey);
   }
   return value.trim();
 }
@@ -47,8 +44,8 @@ export interface LoginInput {
 export function parseLoginInput(body: unknown): LoginInput {
   const record = requireRecord(body);
   return {
-    insuranceNumber: requireText(record.insuranceNumber, "Bitte geben Sie Ihre AHV-Nummer ein."),
-    pin: requireText(record.pin, "Bitte geben Sie Ihre PIN ein."),
+    insuranceNumber: requireText(record.insuranceNumber, "insuranceNumberRequired"),
+    pin: requireText(record.pin, "pinRequired"),
   };
 }
 
@@ -56,27 +53,27 @@ export function parseBookAppointmentInput(body: unknown): BookAppointmentInput {
   const record = requireRecord(body);
   const date = record.date;
   if (!isIsoDate(date)) {
-    throw new ValidationError("Bitte wählen Sie einen Tag.");
+    throw new ValidationError("dayRequired");
   }
   return {
-    type: requireOneOf(record.type, APPOINTMENT_TYPES, "Bitte wählen Sie, was Sie brauchen."),
+    type: requireOneOf(record.type, APPOINTMENT_TYPES, "typeRequired"),
     date,
-    slot: requireOneOf(record.slot, APPOINTMENT_SLOTS, "Bitte wählen Sie eine Zeit."),
+    slot: requireOneOf(record.slot, APPOINTMENT_SLOTS, "slotRequired"),
   };
 }
 
 export function parseConsultationInput(body: unknown): ConsultationInput {
   const record = requireRecord(body);
   return {
-    slotId: requireText(record.slotId, "Bitte wählen Sie eine Zeit."),
-    channel: requireOneOf(record.channel, CONSULTATION_CHANNELS, "Bitte wählen Sie, wie Sie sprechen möchten."),
+    slotId: requireText(record.slotId, "slotRequired"),
+    channel: requireOneOf(record.channel, CONSULTATION_CHANNELS, "channelRequired"),
   };
 }
 
 export function parseTakenInput(body: unknown): { readonly taken: boolean } {
   const record = requireRecord(body);
   if (typeof record.taken !== "boolean") {
-    throw new ValidationError("Die Angabe «genommen» fehlt.");
+    throw new ValidationError("takenMissing");
   }
   return { taken: record.taken };
 }
@@ -84,6 +81,13 @@ export function parseTakenInput(body: unknown): { readonly taken: boolean } {
 export function parseScenarioInput(body: unknown): { readonly scenario: Scenario } {
   const record = requireRecord(body);
   return {
-    scenario: requireOneOf(record.scenario, SCENARIOS, "Unbekanntes Szenario."),
+    scenario: requireOneOf(record.scenario, SCENARIOS, "unknownScenario"),
+  };
+}
+
+export function parseLocaleInput(body: unknown): { readonly locale: Locale } {
+  const record = requireRecord(body);
+  return {
+    locale: requireOneOf(record.locale, LOCALES, "unknownLocale"),
   };
 }

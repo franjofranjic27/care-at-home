@@ -1,10 +1,12 @@
-/** Begrüssung nach Tageszeit (Stunde 0–23). */
-export function greetingForHour(hour: number): string {
+export type DayPeriod = "morning" | "afternoon" | "evening";
+
+/** Tageszeit für die Begrüssung (Stunde 0–23); der Text kommt aus den Messages. */
+export function dayPeriodForHour(hour: number): DayPeriod {
   if (hour < 11) {
-    return "Guten Morgen";
+    return "morning";
   }
   if (hour < 18) {
-    return "Guten Tag";
+    return "afternoon";
   }
-  return "Guten Abend";
+  return "evening";
 }

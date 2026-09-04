@@ -1,17 +1,10 @@
 /**
  * Statische Seed-Daten der Demo. Alle Daten sind reine Funktionen von
  * «heute», damit Termine und Nachrichten immer in der Zukunft bzw. jüngeren
- * Vergangenheit liegen.
+ * Vergangenheit liegen. Die Daten sind sprachunabhängig: Texte werden in den
+ * Komponenten aus `kind`/`id` übersetzt.
  */
-import {
-  addDays,
-  formatDayMonth,
-  instantAt,
-  MONDAY,
-  nextWeekday,
-  weekdayOf,
-  type IsoDate,
-} from "@/lib/dates";
+import { addDays, instantAt, MONDAY, nextWeekday, weekdayOf, type IsoDate } from "@/lib/dates";
 import type {
   Appointment,
   ConsultationSlot,
@@ -54,7 +47,7 @@ export function getDoctor(): Doctor {
     name: "Dr. med. Anna Keller",
     shortName: "Dr. Keller",
     initials: "AK",
-    specialty: "Kardiologie",
+    specialty: "cardiology",
     hospital: "Kantonsspital St. Gallen",
   };
 }
@@ -69,39 +62,6 @@ export function getSeedAppointment(today: IsoDate): Appointment {
   };
 }
 
-export interface MessageContext {
-  readonly nextBloodDrawDate: IsoDate | null;
-}
-
-export interface MessageText {
-  readonly title: string;
-  readonly body: string;
-}
-
-/** Texte je Nachrichtenart – gemeinsame Quelle für Seed- und Demo-Nachrichten. */
-export function messageText(kind: MessageKind, context: MessageContext): MessageText {
-  switch (kind) {
-    case "good":
-      return {
-        title: "Ihre Werte sehen gut aus. Sie müssen nicht ins Spital.",
-        body:
-          "INR und Nierenwerte sind im Zielbereich. Weiter so! " +
-          (context.nextBloodDrawDate
-            ? `Die nächste Blutentnahme ist am ${formatDayMonth(context.nextBloodDrawDate)}.`
-            : "Bitte buchen Sie die nächste Blutentnahme in der App."),
-      };
-    case "consultation":
-      return {
-        title: "Bitte kommen Sie zur Besprechung vorbei.",
-        body:
-          "Ihr Gewicht ist in drei Tagen um 2 kg gestiegen. " +
-          "Das möchte ich mit Ihnen besprechen. Kein Grund zur Sorge.",
-      };
-    default:
-      throw new Error(`Unbekannte Nachrichtenart: ${String(kind)}`);
-  }
-}
-
 export interface SeedMessage {
   readonly id: string;
   readonly kind: MessageKind;
@@ -109,7 +69,7 @@ export interface SeedMessage {
   readonly read: boolean;
 }
 
-/** Nachrichten ohne Text – der Text wird über `messageText` ergänzt. */
+/** Nachrichten ohne Text – der Text wird in der Komponente aus `kind` übersetzt. */
 export function getSeedMessages(today: IsoDate): readonly SeedMessage[] {
   return [
     {
@@ -129,10 +89,10 @@ export function getSeedMessages(today: IsoDate): readonly SeedMessage[] {
 
 export function getVitals(): readonly Vital[] {
   return [
-    { id: "blood-pressure", name: "Blutdruck", value: "128 / 78", status: "good" },
-    { id: "pulse", name: "Puls", value: "72", status: "good" },
-    { id: "weight", name: "Gewicht", value: "68,2", unit: "kg", status: "stable" },
-    { id: "inr", name: "INR (Blutgerinnung)", value: "2,4", status: "in_range" },
+    { id: "blood_pressure", values: [128, 78], status: "good" },
+    { id: "pulse", values: [72], status: "good" },
+    { id: "weight", values: [68.2], unit: "kg", status: "stable" },
+    { id: "inr", values: [2.4], status: "in_range" },
   ];
 }
 
@@ -155,7 +115,3 @@ export function getSeedConsultationSlots(today: IsoDate): readonly Omit<Consulta
     { id: "slot-mon-1100", dateISO: addDays(nextMonday, 7), time: "11:00" },
   ];
 }
-
-/** Text der ausstehenden Besprechung (aus der gelben Nachricht). */
-export const CONSULTATION_REASON =
-  "Dr. med. Anna Keller möchte mit Ihnen über Ihr Gewicht sprechen. Etwa 20 Minuten.";

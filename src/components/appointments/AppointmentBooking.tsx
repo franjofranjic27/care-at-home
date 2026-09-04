@@ -1,12 +1,13 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { DropIcon, StethoscopeIcon } from "@/components/icons";
 import { Button, ErrorNote, InfoNote, OptionCard, OptionRow, OptionTile, StepHeading } from "@/components/ui";
-import { api, describeError } from "@/lib/api";
+import { api } from "@/lib/api";
 import type { IsoDate } from "@/lib/dates";
-import { APPOINTMENT_SLOT_LABELS, APPOINTMENT_TYPE_LABELS } from "@/lib/labels";
+import { useErrorMessage } from "@/lib/useErrorMessage";
 import {
   APPOINTMENT_SLOTS,
   APPOINTMENT_TYPES,
@@ -27,6 +28,9 @@ const TYPE_ICONS: Readonly<Record<AppointmentType, React.ReactNode>> = {
 
 export function AppointmentBooking({ days }: { readonly days: readonly DayOption[] }) {
   const router = useRouter();
+  const t = useTranslations("appointment");
+  const tLabels = useTranslations("labels");
+  const describeError = useErrorMessage();
   const [type, setType] = useState<AppointmentType | null>(null);
   const [date, setDate] = useState<IsoDate | null>(null);
   const [slot, setSlot] = useState<AppointmentSlot | null>(null);
@@ -54,14 +58,14 @@ export function AppointmentBooking({ days }: { readonly days: readonly DayOption
     <div className="flex flex-col gap-5.5">
       <section className="flex flex-col gap-3" role="radiogroup" aria-labelledby="step-type">
         <StepHeading step={1} id="step-type">
-          Was brauchen Sie?
+          {t("stepType")}
         </StepHeading>
         {APPOINTMENT_TYPES.map((option) => (
           <OptionCard
             key={option}
             icon={TYPE_ICONS[option]}
-            title={APPOINTMENT_TYPE_LABELS[option].title}
-            subtitle={APPOINTMENT_TYPE_LABELS[option].subtitle}
+            title={tLabels(`appointmentType.${option}.title`)}
+            subtitle={tLabels(`appointmentType.${option}.subtitle`)}
             selected={type === option}
             onClick={() => setType(option)}
           />
@@ -70,7 +74,7 @@ export function AppointmentBooking({ days }: { readonly days: readonly DayOption
 
       <section className="flex flex-col gap-3" role="radiogroup" aria-labelledby="step-day">
         <StepHeading step={2} id="step-day">
-          An welchem Tag?
+          {t("stepDay")}
         </StepHeading>
         <div className="grid grid-cols-2 gap-2.5">
           {days.map((day) => (
@@ -84,14 +88,14 @@ export function AppointmentBooking({ days }: { readonly days: readonly DayOption
 
       <section className="flex flex-col gap-3" role="radiogroup" aria-labelledby="step-slot">
         <StepHeading step={3} id="step-slot">
-          Zu welcher Zeit?
+          {t("stepSlot")}
         </StepHeading>
         <div className="flex flex-col gap-2.5">
           {APPOINTMENT_SLOTS.map((option) => (
             <OptionRow
               key={option}
-              label={APPOINTMENT_SLOT_LABELS[option].label}
-              trailing={APPOINTMENT_SLOT_LABELS[option].time}
+              label={tLabels(`appointmentSlot.${option}.label`)}
+              trailing={tLabels(`appointmentSlot.${option}.time`)}
               selected={slot === option}
               onClick={() => setSlot(option)}
             />
@@ -99,18 +103,14 @@ export function AppointmentBooking({ days }: { readonly days: readonly DayOption
         </div>
       </section>
 
-      {type === "blood_draw" && (
-        <InfoNote>Bitte essen Sie am Morgen vor der Blutentnahme nichts. Wasser trinken ist erlaubt.</InfoNote>
-      )}
+      {type === "blood_draw" && <InfoNote>{t("fastingHint")}</InfoNote>}
 
       <ErrorNote message={error} />
 
       <Button onClick={submit} disabled={!complete || pending}>
-        {pending ? "Wird gebucht …" : "Termin bestätigen"}
+        {pending ? t("submitting") : t("submit")}
       </Button>
-      {!complete && (
-        <p className="text-center text-small text-muted">Bitte wählen Sie Art, Tag und Zeit.</p>
-      )}
+      {!complete && <p className="text-center text-small text-muted">{t("incomplete")}</p>}
     </div>
   );
 }

@@ -1,7 +1,7 @@
+import { getLocale, getTranslations } from "next-intl/server";
 import { CalendarIcon, UserIcon } from "@/components/icons";
 import { ArrowLink, Card, SectionLabel } from "@/components/ui";
 import { formatWeekdayDayMonth, type IsoDate } from "@/lib/dates";
-import { APPOINTMENT_SLOT_LABELS, APPOINTMENT_TYPE_LABELS } from "@/lib/labels";
 import type { Appointment, CareTeam } from "@/server/domain";
 
 export interface NextAppointmentCardProps {
@@ -10,43 +10,45 @@ export interface NextAppointmentCardProps {
   readonly today: IsoDate;
 }
 
-export function NextAppointmentCard({ appointment, careTeam, today }: NextAppointmentCardProps) {
+export async function NextAppointmentCard({ appointment, careTeam, today }: NextAppointmentCardProps) {
+  const [locale, t, tLabels] = await Promise.all([
+    getLocale(),
+    getTranslations("dashboard.nextAppointment"),
+    getTranslations("labels"),
+  ]);
+
   if (!appointment) {
     return (
       <Card tone="brand-tint" className="gap-2.5">
-        <SectionLabel tone="brand">Nächster Termin</SectionLabel>
-        <p className="text-cta font-bold">Kein Termin geplant</p>
-        <p>Buchen Sie unten einen Termin. {careTeam.organisation} kommt zu Ihnen nach Hause.</p>
+        <SectionLabel tone="brand">{t("label")}</SectionLabel>
+        <p className="text-cta font-bold">{t("none")}</p>
+        <p>{t("noneHint", { organisation: careTeam.organisation })}</p>
       </Card>
     );
   }
 
   const isToday = appointment.date === today;
-  const dayLabel = isToday ? "Heute" : formatWeekdayDayMonth(appointment.date);
+  const dayLabel = isToday ? t("today") : formatWeekdayDayMonth(appointment.date, locale);
 
   return (
     <Card tone="brand-tint" className="gap-2.5">
-      <SectionLabel tone="brand">{isToday ? "Heute" : "Nächster Termin"}</SectionLabel>
+      <SectionLabel tone="brand">{isToday ? t("today") : t("label")}</SectionLabel>
       <p className="text-cta font-bold">
         {isToday
-          ? `Ihre ${APPOINTMENT_TYPE_LABELS[appointment.type].title} ist heute`
-          : APPOINTMENT_TYPE_LABELS[appointment.type].longTitle}
+          ? t("todayTitle", { type: tLabels(`appointmentType.${appointment.type}.title`) })
+          : tLabels(`appointmentType.${appointment.type}.longTitle`)}
       </p>
       <p className="flex items-center gap-2.5">
         <CalendarIcon size={22} className="shrink-0 text-brand" />
         <span>
-          {dayLabel}, {APPOINTMENT_SLOT_LABELS[appointment.slot].time}
+          {dayLabel}, {tLabels(`appointmentSlot.${appointment.slot}.time`)}
         </span>
       </p>
       <p className="flex items-center gap-2.5">
         <UserIcon size={22} className="shrink-0 text-brand" />
-        <span>
-          {careTeam.organisation} · {careTeam.contactPerson} kommt zu Ihnen
-        </span>
+        <span>{t("who", { organisation: careTeam.organisation, contactPerson: careTeam.contactPerson })}</span>
       </p>
-      <ArrowLink href={`/termin/bestaetigt?id=${encodeURIComponent(appointment.id)}`}>
-        Termin ansehen oder absagen
-      </ArrowLink>
+      <ArrowLink href={`/termin/bestaetigt?id=${encodeURIComponent(appointment.id)}`}>{t("manage")}</ArrowLink>
     </Card>
   );
 }

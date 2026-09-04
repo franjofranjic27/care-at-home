@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 
 export interface StepHeadingProps {
@@ -8,6 +9,7 @@ export interface StepHeadingProps {
 
 /** Nummerierter Schritt-Titel («1 · Was brauchen Sie?»). */
 export function StepHeading({ step, id, children }: StepHeadingProps) {
+  const t = useTranslations("common");
   return (
     <div className="flex items-center gap-3">
       <span
@@ -17,7 +19,7 @@ export function StepHeading({ step, id, children }: StepHeadingProps) {
         {step}
       </span>
       <h2 id={id} className="text-tile font-bold">
-        <span className="sr-only">Schritt {step}: </span>
+        <span className="sr-only">{t("step", { step })}</span>
         {children}
       </h2>
     </div>

@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Atkinson_Hyperlegible } from "next/font/google";
+import { NextIntlClientProvider } from "next-intl";
+import { getLocale, getTranslations } from "next-intl/server";
 import type { ReactNode } from "react";
 import "./globals.css";
 
@@ -10,10 +12,13 @@ const atkinson = Atkinson_Hyperlegible({
   variable: "--font-atkinson",
 });
 
-export const metadata: Metadata = {
-  title: "Care@Home",
-  description: "Die Untersuchung kommt zu Ihnen nach Hause.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("common");
+  return {
+    title: t("appName"),
+    description: t("tagline"),
+  };
+}
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -21,10 +26,13 @@ export const viewport: Viewport = {
   themeColor: "#0040F8",
 };
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+export default async function RootLayout({ children }: { children: ReactNode }) {
+  const locale = await getLocale();
   return (
-    <html lang="de-CH" className={atkinson.variable}>
-      <body>{children}</body>
+    <html lang={locale} className={atkinson.variable}>
+      <body>
+        <NextIntlClientProvider>{children}</NextIntlClientProvider>
+      </body>
     </html>
   );
 }

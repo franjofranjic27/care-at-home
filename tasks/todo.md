@@ -14,7 +14,16 @@ Design-Vorlage: `design/*.dc.html` (Claude-Design-Canvas, erster Entwurf).
 - [x] Sicherheits-Review und Korrekturen (Header, Cookie-Grenzen, tiefe Cookie-Validierung, Fehlerseite)
 - [x] Code-Review und Korrekturen (Datumsfehler, Server-Validierung, Fokus, Touch-Ziele, Radiogruppen, Duplikate)
 - [x] README inkl. Vercel-Deployment
-- [ ] Git-Repository anlegen und zu GitHub pushen (für Vercel-Import) – auf Wunsch des Nutzers
+- [x] Git-Repository angelegt und gepusht: https://github.com/franjofranjic27/care-at-home (privat)
+- [ ] Vercel: Repo importieren und deployen
+
+## i18n (Deutsch / Englisch)
+- [x] `next-intl` ohne URL-Präfix: Sprache = Cookie `cah_locale` → sonst `Accept-Language` (de* → de) → sonst `en`
+- [x] Alle UI-Texte, Domänen-Labels, Arzt-Nachrichten, Werte-Namen, Fehlermeldungen der API in `messages/de.json` + `messages/en.json`
+- [x] Datumsformate je Sprache (`de-CH` / `en-GB`), `<html lang>` dynamisch, Metadaten übersetzt
+- [x] Sprachumschalter (≥ 60 px) auf Anmeldeseite und Übersicht, `POST /api/locale`
+- [x] Verifikation: Accept-Language de → Deutsch, fr → Englisch, ohne Header → Englisch, Cookie schlägt Header
+- [x] README-Abschnitt i18n
 
 ## Design-Tokens (aus dem Pitch-Deck)
 - Blau `#0040F8` (Primär), dunkler Hover `#0030BF`, Fläche `#E8EDFF`, Himmel-Fläche `#ECF9FE`

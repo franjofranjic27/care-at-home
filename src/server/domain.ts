@@ -27,12 +27,15 @@ export interface Appointment {
   readonly slot: AppointmentSlot;
 }
 
+/** Fachgebiet als Schlüssel; die Bezeichnung kommt aus den Messages (`labels.specialty`). */
+export type DoctorSpecialty = "cardiology";
+
 export interface Doctor {
   readonly id: string;
   readonly name: string;
   readonly shortName: string;
   readonly initials: string;
-  readonly specialty: string;
+  readonly specialty: DoctorSpecialty;
   readonly hospital: string;
 }
 
@@ -46,13 +49,21 @@ export interface DoctorStatus {
 export const MESSAGE_KINDS = ["good", "consultation"] as const;
 export type MessageKind = (typeof MESSAGE_KINDS)[number];
 
+/** Kontext, den die Komponenten in den Nachrichtentext einsetzen (`{date}`). */
+export interface MessageContext {
+  readonly nextBloodDrawDate: IsoDate | null;
+}
+
+/**
+ * Nachricht der Ärztin. Der Text ist nicht Teil der Daten: Er wird in der
+ * Sprache der Anfrage aus `kind` und `context` übersetzt.
+ */
 export interface DoctorMessage {
   readonly id: string;
   readonly kind: MessageKind;
   readonly dateISO: IsoInstant;
-  readonly title: string;
-  readonly body: string;
   readonly read: boolean;
+  readonly context: MessageContext;
 }
 
 export interface ConsultationSlot {
@@ -77,10 +88,16 @@ export interface Consultation {
 
 export type VitalStatus = "good" | "stable" | "in_range";
 
+export const VITAL_IDS = ["blood_pressure", "pulse", "weight", "inr"] as const;
+export type VitalId = (typeof VITAL_IDS)[number];
+
+/**
+ * Messwert. Die Bezeichnung kommt aus den Messages (`labels.vital.<id>`);
+ * mehrere Zahlen (Blutdruck) werden in der Anzeige mit «/» verbunden.
+ */
 export interface Vital {
-  readonly id: string;
-  readonly name: string;
-  readonly value: string;
+  readonly id: VitalId;
+  readonly values: readonly number[];
   readonly unit?: string;
   readonly status: VitalStatus;
 }

@@ -1,9 +1,9 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useEffect, useRef } from "react";
 import { CalendarIcon, CheckIcon, ClockIcon, HospitalIcon, PhoneIcon } from "@/components/icons";
 import { Card, IconCircle, LinkButton } from "@/components/ui";
-import { CHANNEL_LABELS } from "@/lib/labels";
 import type { ConsultationChannel, Doctor } from "@/server/domain";
 
 export interface ConfirmedConsultation {
@@ -21,6 +21,9 @@ export interface ConsultationConfirmationProps {
 
 /** Bestätigungsansicht nach dem Vereinbaren einer Besprechung. */
 export function ConsultationConfirmation({ doctor, consultation, focusHeading = false }: ConsultationConfirmationProps) {
+  const t = useTranslations("consultation.confirmed");
+  const tCommon = useTranslations("common");
+  const tLabels = useTranslations("labels");
   const headingRef = useRef<HTMLHeadingElement>(null);
   const ChannelIcon = consultation.channel === "phone" ? PhoneIcon : HospitalIcon;
 
@@ -42,35 +45,33 @@ export function ConsultationConfirmation({ doctor, consultation, focusHeading = 
           aria-live="polite"
           className="text-center text-title font-bold outline-none"
         >
-          Ihre Besprechung ist vereinbart
+          {t("title")}
         </h2>
       </div>
 
       <Card tone="brand-tint" padding="lg" className="gap-3.5">
-        <p className="text-card-title font-bold">Besprechung mit {doctor.name}</p>
+        <p className="text-card-title font-bold">{t("with", { doctor: doctor.name })}</p>
         <p className="flex items-center gap-3 text-lead">
           <CalendarIcon className="shrink-0 text-brand" />
           <span>{consultation.dateLabel}</span>
         </p>
         <p className="flex items-center gap-3 text-lead">
           <ClockIcon className="shrink-0 text-brand" />
-          <span>{consultation.time} Uhr</span>
+          <span>{t("time", { time: consultation.time })}</span>
         </p>
         <p className="flex items-center gap-3 text-lead">
           <ChannelIcon className="shrink-0 text-brand" />
-          <span>{CHANNEL_LABELS[consultation.channel].confirmation}</span>
+          <span>{tLabels(`channel.${consultation.channel}.confirmation`, { doctor: doctor.shortName })}</span>
         </p>
       </Card>
 
       <p className="text-center text-muted">
-        {consultation.channel === "phone"
-          ? "Wir erinnern Sie am Tag davor per SMS und Anruf."
-          : "Bitte kommen Sie 10 Minuten vorher. Wir erinnern Sie am Tag davor per SMS und Anruf."}
+        {consultation.channel === "phone" ? t("reminderPhone") : t("reminderOnsite")}
       </p>
 
       <div className="grow" />
 
-      <LinkButton href="/">Zur Übersicht</LinkButton>
+      <LinkButton href="/">{tCommon("toOverview")}</LinkButton>
     </div>
   );
 }

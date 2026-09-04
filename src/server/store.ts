@@ -15,6 +15,7 @@ import {
   type DoctorMessage,
   type DoctorStatus,
   type Medication,
+  type MessageContext,
   type Patient,
   type Scenario,
   type TrafficLight,
@@ -30,7 +31,6 @@ import {
   getSeedConsultationSlots,
   getSeedMessages,
   getVitals,
-  messageText,
   VITALS_TIME,
 } from "./seed";
 import type { DemoState } from "./state";
@@ -103,7 +103,7 @@ export function getMessages(state: DemoState, now: Date): readonly DoctorMessage
   const today = todayIso(now);
   const nextBloodDraw =
     getAppointments(state, now).find((a) => a.type === "blood_draw")?.date ?? null;
-  const context = { nextBloodDrawDate: nextBloodDraw };
+  const context: MessageContext = { nextBloodDrawDate: nextBloodDraw };
 
   const seeded = getSeedMessages(today).map((m) => ({
     ...m,
@@ -115,7 +115,7 @@ export function getMessages(state: DemoState, now: Date): readonly DoctorMessage
   }));
 
   return [...extra, ...seeded]
-    .map((m) => ({ ...m, ...messageText(m.kind, context) }))
+    .map((m) => ({ ...m, context }))
     .sort((a, b) => b.dateISO.localeCompare(a.dateISO));
 }
 
@@ -208,16 +208,14 @@ export function bookAppointment(
   now: Date,
 ): BookAppointmentResult {
   if (!nextBusinessDays(todayIso(now), BOOKABLE_DAYS).includes(input.date)) {
-    throw new ValidationError("Bitte wählen Sie einen der angebotenen Tage.");
+    throw new ValidationError("dayNotOffered");
   }
   const planned = getAppointments(state, now);
   if (planned.some((a) => a.type === input.type && a.date === input.date && a.slot === input.slot)) {
-    throw new ValidationError("Diesen Termin haben Sie bereits gebucht.");
+    throw new ValidationError("duplicateAppointment");
   }
   if (planned.length >= MAX_PLANNED_APPOINTMENTS) {
-    throw new ValidationError(
-      `Sie haben bereits ${MAX_PLANNED_APPOINTMENTS} Termine geplant. Bitte sagen Sie zuerst einen ab.`,
-    );
+    throw new ValidationError("tooManyAppointments", { max: MAX_PLANNED_APPOINTMENTS });
   }
   const appointment: Appointment = { id: newId("apt"), ...input };
   return {
@@ -232,7 +230,7 @@ export function bookAppointment(
  */
 export function cancelAppointment(state: DemoState, id: string, now: Date): DemoState {
   if (!getAppointment(state, id, now)) {
-    throw new NotFoundError("Dieser Termin wurde nicht gefunden.");
+    throw new NotFoundError("appointmentNotFound");
   }
   if (state.appointments.some((a) => a.id === id)) {
     return { ...state, appointments: state.appointments.filter((a) => a.id !== id) };
@@ -242,7 +240,7 @@ export function cancelAppointment(state: DemoState, id: string, now: Date): Demo
 
 export function markMessageRead(state: DemoState, id: string, now: Date): DemoState {
   if (!getMessages(state, now).some((m) => m.id === id)) {
-    throw new NotFoundError("Diese Nachricht wurde nicht gefunden.");
+    throw new NotFoundError("messageNotFound");
   }
   if (state.readMessageIds.includes(id)) {
     return state;
@@ -257,11 +255,11 @@ export interface ConsultationInput {
 
 export function bookConsultation(state: DemoState, input: ConsultationInput, now: Date): DemoState {
   if (state.consultation) {
-    throw new ValidationError("Sie haben bereits eine Besprechung vereinbart.");
+    throw new ValidationError("consultationExists");
   }
   const slot = getConsultationSlots(state, now).find((s) => s.id === input.slotId);
   if (!slot) {
-    throw new NotFoundError("Diese Zeit ist nicht mehr verfügbar.");
+    throw new NotFoundError("slotUnavailable");
   }
   return {
     ...state,
@@ -271,7 +269,7 @@ export function bookConsultation(state: DemoState, input: ConsultationInput, now
 
 export function setMedicationTaken(state: DemoState, id: string, taken: boolean): DemoState {
   if (!getMedications().some((m) => m.id === id)) {
-    throw new NotFoundError("Dieses Medikament wurde nicht gefunden.");
+    throw new NotFoundError("medicationNotFound");
   }
   return { ...state, medicationTaken: { ...state.medicationTaken, [id]: taken } };
 }

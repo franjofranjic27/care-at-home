@@ -1,12 +1,14 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { api } from "@/lib/api";
 
 /** Kleiner Text-Knopf «Abmelden» neben dem Avatar. */
 export function LogoutButton() {
   const router = useRouter();
+  const t = useTranslations("common");
   const [pending, setPending] = useState(false);
 
   async function logout() {
@@ -25,9 +27,9 @@ export function LogoutButton() {
       type="button"
       onClick={logout}
       disabled={pending}
-      className="min-h-15 px-2 text-small font-bold text-brand hover:text-brand-dark focus-visible:outline-[3px] focus-visible:outline-offset-[3px] focus-visible:outline-ink disabled:text-faint"
+      className="min-h-15 px-2 text-small font-bold whitespace-nowrap text-brand hover:text-brand-dark focus-visible:outline-[3px] focus-visible:outline-offset-[3px] focus-visible:outline-ink disabled:text-faint"
     >
-      Abmelden
+      {t("logout")}
     </button>
   );
 }

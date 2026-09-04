@@ -1,0 +1,264 @@
+{
+  "common": {
+    "appName": "Care@Home",
+    "tagline": "The check-up comes to you at home.",
+    "back": "Back",
+    "toOverview": "Go to overview",
+    "toLogin": "Go to sign-in",
+    "logout": "Sign out",
+    "emergency": "Emergency {number}",
+    "step": "Step {step}: ",
+    "genericError": "Something went wrong. Please try again.",
+    "languages": {
+      "de": "Deutsch",
+      "en": "English"
+    },
+    "switchLanguage": "Switch language to {language}"
+  },
+  "login": {
+    "title": "Sign in",
+    "insuranceNumber": "AHV number",
+    "insuranceNumberHint": "You can find it on your insurance card.",
+    "insuranceNumberPlaceholder": "756.1234.5678.97",
+    "pin": "PIN (4 digits)",
+    "showPin": "Show PIN",
+    "hidePin": "Hide PIN",
+    "submit": "Sign in",
+    "submitting": "Please wait …",
+    "demoHint": "Demo: any number, PIN 1234",
+    "needHelp": "Do you need help?",
+    "call": "Call: {number}",
+    "spitexHelp": "Your Spitex (home care) team is happy to help you sign in for the first time.",
+    "demoLink": "Demo controls"
+  },
+  "dashboard": {
+    "greeting": "{period, select, morning {Good morning} afternoon {Good afternoon} other {Good evening}}, {name}",
+    "mainSections": "Main sections",
+    "bookAppointment": "Book an appointment",
+    "myDoctor": "My doctor",
+    "myHealth": "My health",
+    "nextAppointment": {
+      "label": "Next appointment",
+      "today": "Today",
+      "none": "No appointment planned",
+      "noneHint": "Book an appointment below. {organisation} comes to your home.",
+      "todayTitle": "Today: {type}",
+      "who": "{organisation} · {contactPerson} is coming to you",
+      "manage": "View or cancel appointment"
+    },
+    "status": {
+      "learnMore": "Learn more",
+      "readMessage": "Read message",
+      "chooseTime": "Choose a time",
+      "consultation": {
+        "title": "Please come for a consultation",
+        "body": "{doctor} would like to discuss something with you. No need to worry.",
+        "bodyDated": "{doctor} would like to discuss something with you (message from {date}). No need to worry.",
+        "arranged": "Your consultation: {date}, {time} · {channel}"
+      },
+      "good": {
+        "title": "Your readings look good",
+        "body": "{doctor} has checked your readings. You do not need to go to the hospital.",
+        "bodyDated": "{doctor} checked your readings on {date}. You do not need to go to the hospital."
+      }
+    }
+  },
+  "appointment": {
+    "title": "Book an appointment",
+    "stepType": "What do you need?",
+    "stepDay": "On which day?",
+    "stepSlot": "At what time?",
+    "fastingHint": "Please do not eat on the morning before the blood draw. Drinking water is fine.",
+    "submit": "Confirm appointment",
+    "submitting": "Booking …",
+    "incomplete": "Please choose the type, day and time.",
+    "confirmed": {
+      "title": "Your appointment is booked",
+      "reminder": "We will remind you the day before by SMS and phone call.",
+      "location": "At your home, {organisation}",
+      "notFoundTitle": "Appointment not found",
+      "notFoundBody": "This appointment no longer exists. It may have been cancelled.",
+      "bookNew": "Book a new appointment"
+    },
+    "cancel": {
+      "action": "Change or cancel appointment",
+      "question": "Do you want to cancel this appointment?",
+      "hint": "To change it, cancel this appointment and book a new one.",
+      "confirm": "Yes, cancel",
+      "confirming": "Cancelling …",
+      "keep": "No, keep it"
+    }
+  },
+  "doctor": {
+    "title": "My doctor",
+    "now": "Right now",
+    "messagesFrom": "Messages from {doctor}",
+    "reviewing": {
+      "title": "Your readings are being checked",
+      "body": "{doctor} is looking at your readings from this morning. You will get a message as soon as {doctor} is done."
+    },
+    "status": {
+      "sentAt": "Readings sent at {time}",
+      "idleTitle": "No check pending",
+      "lastCheckToday": "{doctor} last checked your readings today at {time}.",
+      "lastCheckOn": "{doctor} last checked your readings on {date} at {time}."
+    },
+    "message": {
+      "arranged": "Arranged: {date}, {time} · {channel}",
+      "chooseTime": "Choose a time",
+      "good": {
+        "title": "Your readings look good. You do not need to go to the hospital.",
+        "bodyWithDate": "INR and kidney values are in the target range. Keep it up! The next blood draw is on {date}.",
+        "bodyWithoutDate": "INR and kidney values are in the target range. Keep it up! Please book the next blood draw in the app."
+      },
+      "consultation": {
+        "title": "Please come in for a consultation.",
+        "body": "Your weight has gone up by 2 kg in three days. I would like to discuss this with you. No need to worry."
+      }
+    }
+  },
+  "consultation": {
+    "title": "Arrange a consultation",
+    "reason": "{doctor} would like to talk to you about your weight. About 20 minutes.",
+    "stepChannel": "How would you like to talk to {doctor}?",
+    "stepSlot": "When suits you?",
+    "slotsIntro": "{doctor} has kept these times free for you:",
+    "slotTime": "{time}",
+    "chooseChannelFirst": "First choose how you would like to talk to {doctor}.",
+    "submit": "Confirm appointment",
+    "submitting": "Arranging …",
+    "incomplete": "Please choose how and when.",
+    "confirmed": {
+      "title": "Your consultation is arranged",
+      "with": "Consultation with {doctor}",
+      "time": "{time}",
+      "reminderPhone": "We will remind you the day before by SMS and phone call.",
+      "reminderOnsite": "Please arrive 10 minutes early. We will remind you the day before by SMS and phone call."
+    }
+  },
+  "health": {
+    "title": "My health",
+    "vitals": "My readings",
+    "measuredAt": "Today, {time}",
+    "medications": "Medication today",
+    "taken": "taken",
+    "notTaken": "not yet",
+    "whenToCall": "When should I call?",
+    "callIf": "Call your Spitex (home care) team if:",
+    "reasons": {
+      "breathing": "you find it harder to breathe than usual",
+      "weight": "your weight goes up by more than 2 kg in 3 days",
+      "legs": "your legs swell up a lot"
+    },
+    "call": "Call {organisation}"
+  },
+  "demo": {
+    "title": "Demo controls",
+    "intro": "Here you can set up the demo. The overview and “My doctor” will then show the chosen state. The state is stored in a cookie in this browser.",
+    "scenario": {
+      "reviewing": {
+        "label": "Doctor is checking",
+        "done": "The doctor is now checking the readings (blue)."
+      },
+      "good": {
+        "label": "Readings are good",
+        "done": "New green message added."
+      },
+      "consultation": {
+        "label": "Consultation needed",
+        "done": "New yellow message added."
+      }
+    },
+    "reset": "Reset data",
+    "resetDone": "All data has been reset."
+  },
+  "error": {
+    "title": "Something went wrong",
+    "body": "The page could not be loaded. You can reset the demo data or try again.",
+    "resetDemo": "Reset demo data",
+    "resetting": "Resetting …",
+    "retry": "Try again",
+    "api": {
+      "invalidRequest": "The request is invalid.",
+      "requestTooLarge": "The request is too large.",
+      "unexpected": "Something went wrong. Please try again later.",
+      "unauthorized": "Please sign in first.",
+      "wrongPin": "The PIN is not correct. Please try again.",
+      "insuranceNumberRequired": "Please enter your AHV number.",
+      "pinRequired": "Please enter your PIN.",
+      "dayRequired": "Please choose a day.",
+      "typeRequired": "Please choose what you need.",
+      "slotRequired": "Please choose a time.",
+      "channelRequired": "Please choose how you would like to talk.",
+      "takenMissing": "The “taken” value is missing.",
+      "unknownScenario": "Unknown scenario.",
+      "unknownLocale": "Unknown language.",
+      "dayNotOffered": "Please choose one of the offered days.",
+      "duplicateAppointment": "You have already booked this appointment.",
+      "tooManyAppointments": "You already have {max} appointments planned. Please cancel one first.",
+      "appointmentNotFound": "This appointment was not found.",
+      "messageNotFound": "This message was not found.",
+      "consultationExists": "You have already arranged a consultation.",
+      "slotUnavailable": "This time is no longer available.",
+      "medicationNotFound": "This medication was not found."
+    }
+  },
+  "labels": {
+    "appointmentType": {
+      "blood_draw": {
+        "title": "Blood draw",
+        "subtitle": "Takes about 10 minutes",
+        "longTitle": "Blood draw at home"
+      },
+      "home_checkup": {
+        "title": "Check-up at home",
+        "subtitle": "Blood pressure, weight, well-being",
+        "longTitle": "Check-up at home"
+      }
+    },
+    "appointmentSlot": {
+      "morning": {
+        "label": "Early morning",
+        "time": "08:00–10:00"
+      },
+      "late_morning": {
+        "label": "Late morning",
+        "time": "10:00–12:00"
+      },
+      "afternoon": {
+        "label": "Afternoon",
+        "time": "14:00–16:00"
+      }
+    },
+    "channel": {
+      "phone": {
+        "label": "By phone",
+        "hint": "{doctor} will call you at the chosen time. You do not need to prepare anything.",
+        "confirmation": "By phone – {doctor} will call you"
+      },
+      "onsite": {
+        "label": "At the hospital",
+        "hint": "Please arrive 10 minutes early at Kantonsspital St. Gallen, Cardiology reception.",
+        "confirmation": "At Kantonsspital St. Gallen, Cardiology reception"
+      }
+    },
+    "vitalStatus": {
+      "good": "good",
+      "stable": "stable",
+      "in_range": "on target"
+    },
+    "timeOfDay": {
+      "morning": "Morning",
+      "evening": "Evening"
+    },
+    "vital": {
+      "blood_pressure": "Blood pressure",
+      "pulse": "Pulse",
+      "weight": "Weight",
+      "inr": "INR (blood clotting)"
+    },
+    "specialty": {
+      "cardiology": "Cardiology"
+    }
+  }
+}

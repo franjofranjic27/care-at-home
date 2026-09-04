@@ -1,0 +1,264 @@
+{
+  "common": {
+    "appName": "Care@Home",
+    "tagline": "Die Untersuchung kommt zu Ihnen nach Hause.",
+    "back": "Zurück",
+    "toOverview": "Zur Übersicht",
+    "toLogin": "Zur Anmeldung",
+    "logout": "Abmelden",
+    "emergency": "Notfall {number}",
+    "step": "Schritt {step}: ",
+    "genericError": "Etwas hat nicht geklappt. Bitte versuchen Sie es noch einmal.",
+    "languages": {
+      "de": "Deutsch",
+      "en": "English"
+    },
+    "switchLanguage": "Sprache wechseln zu {language}"
+  },
+  "login": {
+    "title": "Anmelden",
+    "insuranceNumber": "AHV-Nummer",
+    "insuranceNumberHint": "Steht auf Ihrer Versichertenkarte.",
+    "insuranceNumberPlaceholder": "756.1234.5678.97",
+    "pin": "PIN (4 Ziffern)",
+    "showPin": "PIN anzeigen",
+    "hidePin": "PIN verbergen",
+    "submit": "Anmelden",
+    "submitting": "Bitte warten …",
+    "demoHint": "Demo: beliebige Nummer, PIN 1234",
+    "needHelp": "Brauchen Sie Hilfe?",
+    "call": "Anrufen: {number}",
+    "spitexHelp": "Ihre Spitex hilft Ihnen gerne beim ersten Anmelden.",
+    "demoLink": "Demo-Steuerung"
+  },
+  "dashboard": {
+    "greeting": "{period, select, morning {Guten Morgen} afternoon {Guten Tag} other {Guten Abend}}, {name}",
+    "mainSections": "Hauptbereiche",
+    "bookAppointment": "Termin buchen",
+    "myDoctor": "Mein Arzt",
+    "myHealth": "Meine Gesundheit",
+    "nextAppointment": {
+      "label": "Nächster Termin",
+      "today": "Heute",
+      "none": "Kein Termin geplant",
+      "noneHint": "Buchen Sie unten einen Termin. {organisation} kommt zu Ihnen nach Hause.",
+      "todayTitle": "Ihre {type} ist heute",
+      "who": "{organisation} · {contactPerson} kommt zu Ihnen",
+      "manage": "Termin ansehen oder absagen"
+    },
+    "status": {
+      "learnMore": "Mehr erfahren",
+      "readMessage": "Nachricht lesen",
+      "chooseTime": "Termin auswählen",
+      "consultation": {
+        "title": "Bitte zur Besprechung",
+        "body": "{doctor} möchte etwas mit Ihnen besprechen. Kein Grund zur Sorge.",
+        "bodyDated": "{doctor} möchte etwas mit Ihnen besprechen (Nachricht vom {date}). Kein Grund zur Sorge.",
+        "arranged": "Ihre Besprechung: {date}, {time} Uhr · {channel}"
+      },
+      "good": {
+        "title": "Ihre Werte sehen gut aus",
+        "body": "{doctor} hat Ihre Werte geprüft. Sie müssen nicht ins Spital.",
+        "bodyDated": "{doctor} hat Ihre Werte am {date} geprüft. Sie müssen nicht ins Spital."
+      }
+    }
+  },
+  "appointment": {
+    "title": "Termin buchen",
+    "stepType": "Was brauchen Sie?",
+    "stepDay": "An welchem Tag?",
+    "stepSlot": "Zu welcher Zeit?",
+    "fastingHint": "Bitte essen Sie am Morgen vor der Blutentnahme nichts. Wasser trinken ist erlaubt.",
+    "submit": "Termin bestätigen",
+    "submitting": "Wird gebucht …",
+    "incomplete": "Bitte wählen Sie Art, Tag und Zeit.",
+    "confirmed": {
+      "title": "Ihr Termin ist gebucht",
+      "reminder": "Wir erinnern Sie am Tag davor per SMS und Anruf.",
+      "location": "Bei Ihnen zuhause, {organisation}",
+      "notFoundTitle": "Termin nicht gefunden",
+      "notFoundBody": "Dieser Termin ist nicht mehr vorhanden. Vielleicht wurde er abgesagt.",
+      "bookNew": "Neuen Termin buchen"
+    },
+    "cancel": {
+      "action": "Termin ändern oder absagen",
+      "question": "Möchten Sie diesen Termin absagen?",
+      "hint": "Zum Ändern sagen Sie den Termin ab und buchen einen neuen.",
+      "confirm": "Ja, absagen",
+      "confirming": "Wird abgesagt …",
+      "keep": "Nein, behalten"
+    }
+  },
+  "doctor": {
+    "title": "Mein Arzt",
+    "now": "Gerade jetzt",
+    "messagesFrom": "Nachrichten von {doctor}",
+    "reviewing": {
+      "title": "Ihre Werte werden geprüft",
+      "body": "{doctor} schaut sich Ihre Werte von heute Morgen an. Sie erhalten eine Nachricht, sobald {doctor} fertig ist."
+    },
+    "status": {
+      "sentAt": "Werte gesendet um {time} Uhr",
+      "idleTitle": "Keine Prüfung offen",
+      "lastCheckToday": "{doctor} hat Ihre Werte zuletzt heute um {time} Uhr geprüft.",
+      "lastCheckOn": "{doctor} hat Ihre Werte zuletzt am {date} um {time} Uhr geprüft."
+    },
+    "message": {
+      "arranged": "Vereinbart: {date}, {time} Uhr · {channel}",
+      "chooseTime": "Termin auswählen",
+      "good": {
+        "title": "Ihre Werte sehen gut aus. Sie müssen nicht ins Spital.",
+        "bodyWithDate": "INR und Nierenwerte sind im Zielbereich. Weiter so! Die nächste Blutentnahme ist am {date}.",
+        "bodyWithoutDate": "INR und Nierenwerte sind im Zielbereich. Weiter so! Bitte buchen Sie die nächste Blutentnahme in der App."
+      },
+      "consultation": {
+        "title": "Bitte kommen Sie zur Besprechung vorbei.",
+        "body": "Ihr Gewicht ist in drei Tagen um 2 kg gestiegen. Das möchte ich mit Ihnen besprechen. Kein Grund zur Sorge."
+      }
+    }
+  },
+  "consultation": {
+    "title": "Besprechung vereinbaren",
+    "reason": "{doctor} möchte mit Ihnen über Ihr Gewicht sprechen. Etwa 20 Minuten.",
+    "stepChannel": "Wie möchten Sie mit {doctor} sprechen?",
+    "stepSlot": "Wann passt es Ihnen?",
+    "slotsIntro": "{doctor} hat diese Zeiten für Sie freigehalten:",
+    "slotTime": "{time} Uhr",
+    "chooseChannelFirst": "Wählen Sie zuerst, wie Sie mit {doctor} sprechen möchten.",
+    "submit": "Termin bestätigen",
+    "submitting": "Wird vereinbart …",
+    "incomplete": "Bitte wählen Sie Kanal und Zeit.",
+    "confirmed": {
+      "title": "Ihre Besprechung ist vereinbart",
+      "with": "Besprechung mit {doctor}",
+      "time": "{time} Uhr",
+      "reminderPhone": "Wir erinnern Sie am Tag davor per SMS und Anruf.",
+      "reminderOnsite": "Bitte kommen Sie 10 Minuten vorher. Wir erinnern Sie am Tag davor per SMS und Anruf."
+    }
+  },
+  "health": {
+    "title": "Meine Gesundheit",
+    "vitals": "Meine Werte",
+    "measuredAt": "Heute, {time} Uhr",
+    "medications": "Medikamente heute",
+    "taken": "genommen",
+    "notTaken": "noch offen",
+    "whenToCall": "Wann soll ich anrufen?",
+    "callIf": "Rufen Sie Ihre Spitex an, wenn:",
+    "reasons": {
+      "breathing": "Sie schlechter Luft bekommen als sonst",
+      "weight": "Ihr Gewicht in 3 Tagen um mehr als 2 kg steigt",
+      "legs": "Ihre Beine stark anschwellen"
+    },
+    "call": "{organisation} anrufen"
+  },
+  "demo": {
+    "title": "Demo-Steuerung",
+    "intro": "Hier stellen Sie die Demo ein. Die Übersicht und «Mein Arzt» zeigen danach den gewählten Zustand. Der Zustand liegt in einem Cookie in diesem Browser.",
+    "scenario": {
+      "reviewing": {
+        "label": "Arzt prüft gerade",
+        "done": "Die Ärztin prüft jetzt die Werte (blau)."
+      },
+      "good": {
+        "label": "Werte sind gut",
+        "done": "Neue grüne Nachricht eingefügt."
+      },
+      "consultation": {
+        "label": "Besprechung nötig",
+        "done": "Neue gelbe Nachricht eingefügt."
+      }
+    },
+    "reset": "Daten zurücksetzen",
+    "resetDone": "Alle Daten wurden zurückgesetzt."
+  },
+  "error": {
+    "title": "Etwas hat nicht geklappt",
+    "body": "Die Seite konnte nicht geladen werden. Sie können die Demo-Daten zurücksetzen oder es noch einmal versuchen.",
+    "resetDemo": "Demo-Daten zurücksetzen",
+    "resetting": "Wird zurückgesetzt …",
+    "retry": "Noch einmal versuchen",
+    "api": {
+      "invalidRequest": "Die Anfrage ist ungültig.",
+      "requestTooLarge": "Die Anfrage ist zu gross.",
+      "unexpected": "Etwas hat nicht geklappt. Bitte versuchen Sie es später noch einmal.",
+      "unauthorized": "Bitte melden Sie sich zuerst an.",
+      "wrongPin": "Die PIN ist nicht richtig. Bitte versuchen Sie es noch einmal.",
+      "insuranceNumberRequired": "Bitte geben Sie Ihre AHV-Nummer ein.",
+      "pinRequired": "Bitte geben Sie Ihre PIN ein.",
+      "dayRequired": "Bitte wählen Sie einen Tag.",
+      "typeRequired": "Bitte wählen Sie, was Sie brauchen.",
+      "slotRequired": "Bitte wählen Sie eine Zeit.",
+      "channelRequired": "Bitte wählen Sie, wie Sie sprechen möchten.",
+      "takenMissing": "Die Angabe «genommen» fehlt.",
+      "unknownScenario": "Unbekanntes Szenario.",
+      "unknownLocale": "Unbekannte Sprache.",
+      "dayNotOffered": "Bitte wählen Sie einen der angebotenen Tage.",
+      "duplicateAppointment": "Diesen Termin haben Sie bereits gebucht.",
+      "tooManyAppointments": "Sie haben bereits {max} Termine geplant. Bitte sagen Sie zuerst einen ab.",
+      "appointmentNotFound": "Dieser Termin wurde nicht gefunden.",
+      "messageNotFound": "Diese Nachricht wurde nicht gefunden.",
+      "consultationExists": "Sie haben bereits eine Besprechung vereinbart.",
+      "slotUnavailable": "Diese Zeit ist nicht mehr verfügbar.",
+      "medicationNotFound": "Dieses Medikament wurde nicht gefunden."
+    }
+  },
+  "labels": {
+    "appointmentType": {
+      "blood_draw": {
+        "title": "Blutentnahme",
+        "subtitle": "Dauert etwa 10 Minuten",
+        "longTitle": "Blutentnahme zuhause"
+      },
+      "home_checkup": {
+        "title": "Untersuchung zuhause",
+        "subtitle": "Blutdruck, Gewicht, Befinden",
+        "longTitle": "Untersuchung zuhause"
+      }
+    },
+    "appointmentSlot": {
+      "morning": {
+        "label": "Früh morgens",
+        "time": "08–10 Uhr"
+      },
+      "late_morning": {
+        "label": "Am Vormittag",
+        "time": "10–12 Uhr"
+      },
+      "afternoon": {
+        "label": "Am Nachmittag",
+        "time": "14–16 Uhr"
+      }
+    },
+    "channel": {
+      "phone": {
+        "label": "Per Telefon",
+        "hint": "{doctor} ruft Sie zur gewählten Zeit an. Sie müssen nichts vorbereiten.",
+        "confirmation": "Per Telefon – {doctor} ruft Sie an"
+      },
+      "onsite": {
+        "label": "Im Spital",
+        "hint": "Bitte kommen Sie 10 Minuten vorher ans Kantonsspital St. Gallen, Empfang Kardiologie.",
+        "confirmation": "Im Kantonsspital St. Gallen, Empfang Kardiologie"
+      }
+    },
+    "vitalStatus": {
+      "good": "gut",
+      "stable": "stabil",
+      "in_range": "im Ziel"
+    },
+    "timeOfDay": {
+      "morning": "Morgens",
+      "evening": "Abends"
+    },
+    "vital": {
+      "blood_pressure": "Blutdruck",
+      "pulse": "Puls",
+      "weight": "Gewicht",
+      "inr": "INR (Blutgerinnung)"
+    },
+    "specialty": {
+      "cardiology": "Kardiologie"
+    }
+  }
+}

@@ -1,4 +1,5 @@
 import { cookies } from "next/headers";
+import { getTranslations } from "next-intl/server";
 import { AppointmentDetailsCard } from "@/components/appointments/AppointmentDetailsCard";
 import { CancelAppointment } from "@/components/appointments/CancelAppointment";
 import { CheckIcon } from "@/components/icons";
@@ -13,43 +14,42 @@ interface PageProps {
 }
 
 export default async function AppointmentConfirmedPage({ searchParams }: PageProps) {
-  const { id } = await searchParams;
+  const [{ id }, t, state] = await Promise.all([searchParams, getTranslations(), cookies().then(readState)]);
   const appointmentId = typeof id === "string" ? id : null;
-  const state = readState(await cookies());
   const appointment = appointmentId ? getAppointment(state, appointmentId, new Date()) : null;
 
   if (!appointment) {
     return (
       <Screen>
-        <BackLink href="/" label="Zur Übersicht" />
-        <h1>Termin nicht gefunden</h1>
-        <p>Dieser Termin ist nicht mehr vorhanden. Vielleicht wurde er abgesagt.</p>
+        <BackLink href="/" label={t("common.toOverview")} />
+        <h1>{t("appointment.confirmed.notFoundTitle")}</h1>
+        <p>{t("appointment.confirmed.notFoundBody")}</p>
         <LinkButton href="/termin" variant="secondary">
-          Neuen Termin buchen
+          {t("appointment.confirmed.bookNew")}
         </LinkButton>
-        <LinkButton href="/">Zur Übersicht</LinkButton>
+        <LinkButton href="/">{t("common.toOverview")}</LinkButton>
       </Screen>
     );
   }
 
   return (
     <Screen className="gap-6">
-      <BackLink href="/" label="Zur Übersicht" />
+      <BackLink href="/" label={t("common.toOverview")} />
 
       <div className="flex flex-col items-center gap-4.5 pt-6">
         <IconCircle tone="ok" size="xl">
           <CheckIcon size={56} />
         </IconCircle>
-        <h1 className="text-center">Ihr Termin ist gebucht</h1>
+        <h1 className="text-center">{t("appointment.confirmed.title")}</h1>
       </div>
 
       <AppointmentDetailsCard appointment={appointment} careTeam={getPatient().careTeam} />
 
-      <p className="text-center text-muted">Wir erinnern Sie am Tag davor per SMS und Anruf.</p>
+      <p className="text-center text-muted">{t("appointment.confirmed.reminder")}</p>
 
       <div className="grow" />
 
-      <LinkButton href="/">Zur Übersicht</LinkButton>
+      <LinkButton href="/">{t("common.toOverview")}</LinkButton>
       <CancelAppointment appointmentId={appointment.id} />
     </Screen>
   );

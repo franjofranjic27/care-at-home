@@ -1,14 +1,15 @@
 /**
- * Datums-Hilfsfunktionen für die Schweiz (de-CH, Europe/Zurich).
+ * Datums-Hilfsfunktionen für die Schweiz (Zeitzone Europe/Zurich).
  *
  * Kalendertage werden als `IsoDate` ("YYYY-MM-DD") geführt und intern als
  * UTC-Mitternacht gerechnet, damit Zeitzonen und Sommerzeit keine Rolle spielen.
  * Zeitpunkte (`IsoInstant`) sind echte Zeitstempel und werden für die Anzeige
  * in die Schweizer Zeitzone umgerechnet.
+ *
+ * Berechnungen sind sprachunabhängig; die Formatierung nimmt die App-Sprache
+ * entgegen und formatiert regional (`de` → de-CH, `en` → en-GB).
  */
-
-export const LOCALE = "de-CH";
-export const TIME_ZONE = "Europe/Zurich";
+import { intlLocale, TIME_ZONE, type Locale } from "@/i18n/config";
 
 /** Kalendertag im Format "YYYY-MM-DD". */
 export type IsoDate = string;
@@ -122,21 +123,21 @@ export function nextBusinessDays(after: IsoDate, count: number): IsoDate[] {
   return result;
 }
 
-function formatCalendar(iso: IsoDate, options: Intl.DateTimeFormatOptions): string {
-  return new Intl.DateTimeFormat(LOCALE, { timeZone: "UTC", ...options }).format(
+function formatCalendar(iso: IsoDate, locale: Locale, options: Intl.DateTimeFormatOptions): string {
+  return new Intl.DateTimeFormat(intlLocale(locale), { timeZone: "UTC", ...options }).format(
     toUtcDate(iso),
   );
 }
 
-function formatInstant(instant: IsoInstant, options: Intl.DateTimeFormatOptions): string {
-  return new Intl.DateTimeFormat(LOCALE, { timeZone: TIME_ZONE, ...options }).format(
+function formatInstant(instant: IsoInstant, locale: Locale, options: Intl.DateTimeFormatOptions): string {
+  return new Intl.DateTimeFormat(intlLocale(locale), { timeZone: TIME_ZONE, ...options }).format(
     new Date(instant),
   );
 }
 
-/** "Freitag, 4. September 2026" */
-export function formatFullDate(iso: IsoDate): string {
-  return formatCalendar(iso, {
+/** "Freitag, 4. September 2026" / "Friday, 4 September 2026" */
+export function formatFullDate(iso: IsoDate, locale: Locale): string {
+  return formatCalendar(iso, locale, {
     weekday: "long",
     day: "numeric",
     month: "long",
@@ -144,29 +145,29 @@ export function formatFullDate(iso: IsoDate): string {
   });
 }
 
-/** "Montag, 7. September" */
-export function formatWeekdayDayMonth(iso: IsoDate): string {
-  return formatCalendar(iso, { weekday: "long", day: "numeric", month: "long" });
+/** "Montag, 7. September" / "Monday, 7 September" */
+export function formatWeekdayDayMonth(iso: IsoDate, locale: Locale): string {
+  return formatCalendar(iso, locale, { weekday: "long", day: "numeric", month: "long" });
 }
 
-/** "Montag" */
-export function formatWeekday(iso: IsoDate): string {
-  return formatCalendar(iso, { weekday: "long" });
+/** "Montag" / "Monday" */
+export function formatWeekday(iso: IsoDate, locale: Locale): string {
+  return formatCalendar(iso, locale, { weekday: "long" });
 }
 
-/** "7. September" */
-export function formatDayMonth(iso: IsoDate): string {
-  return formatCalendar(iso, { day: "numeric", month: "long" });
+/** "7. September" / "7 September" */
+export function formatDayMonth(iso: IsoDate, locale: Locale): string {
+  return formatCalendar(iso, locale, { day: "numeric", month: "long" });
 }
 
-/** "2. September" (Zeitpunkt, in Schweizer Zeit) */
-export function formatInstantDayMonth(instant: IsoInstant): string {
-  return formatInstant(instant, { day: "numeric", month: "long" });
+/** "2. September" / "2 September" (Zeitpunkt, in Schweizer Zeit) */
+export function formatInstantDayMonth(instant: IsoInstant, locale: Locale): string {
+  return formatInstant(instant, locale, { day: "numeric", month: "long" });
 }
 
-/** "08:05" (Zeitpunkt, in Schweizer Zeit) */
-export function formatInstantTime(instant: IsoInstant): string {
-  return formatInstant(instant, { hour: "2-digit", minute: "2-digit", hourCycle: "h23" });
+/** "08:05" (Zeitpunkt, in Schweizer Zeit, 24-Stunden-Format in beiden Sprachen) */
+export function formatInstantTime(instant: IsoInstant, locale: Locale): string {
+  return formatInstant(instant, locale, { hour: "2-digit", minute: "2-digit", hourCycle: "h23" });
 }
 
 export function isToday(instant: IsoInstant, now: Date): boolean {

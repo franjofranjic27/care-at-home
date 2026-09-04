@@ -1,23 +1,23 @@
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 import { DemoControls } from "@/components/demo/DemoControls";
 import { Screen } from "@/components/layout/Screen";
 import { FOCUS_RING, LinkButton } from "@/components/ui";
 import { cx } from "@/lib/cx";
 
-export default function DemoPage() {
+export default async function DemoPage() {
+  const t = await getTranslations();
+
   return (
     <Screen>
-      <h1>Demo-Steuerung</h1>
-      <p>
-        Hier stellen Sie die Demo ein. Die Übersicht und «Mein Arzt» zeigen danach den gewählten Zustand.
-        Der Zustand liegt in einem Cookie in diesem Browser.
-      </p>
+      <h1>{t("demo.title")}</h1>
+      <p>{t("demo.intro")}</p>
 
       <DemoControls />
 
       <div className="grow" />
 
-      <LinkButton href="/">Zur Übersicht</LinkButton>
+      <LinkButton href="/">{t("common.toOverview")}</LinkButton>
       <Link
         href="/login"
         className={cx(
@@ -25,7 +25,7 @@ export default function DemoPage() {
           FOCUS_RING,
         )}
       >
-        Zur Anmeldung
+        {t("common.toLogin")}
       </Link>
     </Screen>
   );

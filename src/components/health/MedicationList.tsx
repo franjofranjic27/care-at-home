@@ -1,17 +1,21 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { CheckIcon } from "@/components/icons";
 import { Card, ErrorNote } from "@/components/ui";
-import { api, describeError } from "@/lib/api";
+import { api } from "@/lib/api";
 import { cx } from "@/lib/cx";
-import { TIME_OF_DAY_LABELS } from "@/lib/labels";
+import { useErrorMessage } from "@/lib/useErrorMessage";
 import type { Medication } from "@/server/domain";
 
 /** Medikamente von heute – die ganze Zeile ist der Klickbereich zum Abhaken. */
 export function MedicationList({ medications }: { readonly medications: readonly Medication[] }) {
   const router = useRouter();
+  const t = useTranslations("health");
+  const tLabels = useTranslations("labels");
+  const describeError = useErrorMessage();
   const [pendingId, setPendingId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -53,7 +57,7 @@ export function MedicationList({ medications }: { readonly medications: readonly
                 {medication.name} {medication.dose}
               </span>
               <span className="text-small text-muted">
-                {TIME_OF_DAY_LABELS[medication.timeOfDay]} · {medication.taken ? "genommen" : "noch offen"}
+                {tLabels(`timeOfDay.${medication.timeOfDay}`)} · {medication.taken ? t("taken") : t("notTaken")}
               </span>
             </span>
           </button>

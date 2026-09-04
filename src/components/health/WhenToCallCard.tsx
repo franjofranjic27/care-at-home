@@ -1,29 +1,27 @@
+import { useTranslations } from "next-intl";
 import { PhoneIcon } from "@/components/icons";
 import { Card, LinkButton } from "@/components/ui";
 import type { CareTeam } from "@/server/domain";
 
-const REASONS: readonly string[] = [
-  "Sie schlechter Luft bekommen als sonst",
-  "Ihr Gewicht in 3 Tagen um mehr als 2 kg steigt",
-  "Ihre Beine stark anschwellen",
-];
+const REASON_KEYS = ["breathing", "weight", "legs"] as const;
 
 export function WhenToCallCard({ careTeam }: { readonly careTeam: CareTeam }) {
+  const t = useTranslations("health");
   return (
     <Card tone="warn-tint" className="gap-3.5">
-      <p>Rufen Sie Ihre Spitex an, wenn:</p>
+      <p>{t("callIf")}</p>
       <ul className="flex flex-col gap-2.5">
-        {REASONS.map((reason) => (
-          <li key={reason} className="flex gap-2.5">
+        {REASON_KEYS.map((key) => (
+          <li key={key} className="flex gap-2.5">
             <span aria-hidden="true" className="font-bold text-warn">
               •
             </span>
-            <span>{reason}</span>
+            <span>{t(`reasons.${key}`)}</span>
           </li>
         ))}
       </ul>
       <LinkButton href={`tel:${careTeam.phone}`} variant="secondary" icon={<PhoneIcon />}>
-        {careTeam.organisation} anrufen
+        {t("call", { organisation: careTeam.organisation })}
       </LinkButton>
     </Card>
   );

@@ -11,7 +11,7 @@ export async function POST(request: Request) {
   return handle(async () => {
     const input = parseLoginInput(await readJson(request));
     if (input.pin !== DEMO_PIN) {
-      throw new UnauthorizedError("Die PIN ist nicht richtig. Bitte versuchen Sie es noch einmal.");
+      throw new UnauthorizedError("wrongPin");
     }
     const patient = getPatient();
     const cookieStore = await cookies();

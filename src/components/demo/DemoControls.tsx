@@ -1,25 +1,17 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { Button, ErrorNote } from "@/components/ui";
-import { api, describeError } from "@/lib/api";
-import type { Scenario } from "@/server/domain";
-
-interface ScenarioOption {
-  readonly scenario: Scenario;
-  readonly label: string;
-  readonly done: string;
-}
-
-const SCENARIOS: readonly ScenarioOption[] = [
-  { scenario: "reviewing", label: "Arzt prüft gerade", done: "Die Ärztin prüft jetzt die Werte (blau)." },
-  { scenario: "good", label: "Werte sind gut", done: "Neue grüne Nachricht eingefügt." },
-  { scenario: "consultation", label: "Besprechung nötig", done: "Neue gelbe Nachricht eingefügt." },
-];
+import { api } from "@/lib/api";
+import { useErrorMessage } from "@/lib/useErrorMessage";
+import { SCENARIOS } from "@/server/domain";
 
 export function DemoControls() {
   const router = useRouter();
+  const t = useTranslations("demo");
+  const describeError = useErrorMessage();
   const [status, setStatus] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
@@ -41,22 +33,18 @@ export function DemoControls() {
 
   return (
     <div className="flex flex-col gap-3">
-      {SCENARIOS.map((option) => (
+      {SCENARIOS.map((scenario) => (
         <Button
-          key={option.scenario}
+          key={scenario}
           variant="secondary"
           disabled={pending}
-          onClick={() => run(() => api.setScenario(option.scenario), option.done)}
+          onClick={() => run(() => api.setScenario(scenario), t(`scenario.${scenario}.done`))}
         >
-          {option.label}
+          {t(`scenario.${scenario}.label`)}
         </Button>
       ))}
-      <Button
-        variant="danger-outline"
-        disabled={pending}
-        onClick={() => run(() => api.resetDemo(), "Alle Daten wurden zurückgesetzt.")}
-      >
-        Daten zurücksetzen
+      <Button variant="danger-outline" disabled={pending} onClick={() => run(() => api.resetDemo(), t("resetDone"))}>
+        {t("reset")}
       </Button>
       <p role="status" aria-live="polite" className="min-h-6 text-center font-bold text-ok-text">
         {status}

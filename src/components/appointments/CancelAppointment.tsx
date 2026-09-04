@@ -1,9 +1,11 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
 import { Button, Card, ErrorNote } from "@/components/ui";
-import { api, describeError } from "@/lib/api";
+import { api } from "@/lib/api";
+import { useErrorMessage } from "@/lib/useErrorMessage";
 
 interface CancelConfirmationProps {
   readonly appointmentId: string;
@@ -13,6 +15,8 @@ interface CancelConfirmationProps {
 /** Inline-Bestätigung; beim Einblenden wandert der Fokus auf die Frage. */
 function CancelConfirmation({ appointmentId, onKeep }: CancelConfirmationProps) {
   const router = useRouter();
+  const t = useTranslations("appointment.cancel");
+  const describeError = useErrorMessage();
   const headingRef = useRef<HTMLHeadingElement>(null);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -37,15 +41,15 @@ function CancelConfirmation({ appointmentId, onKeep }: CancelConfirmationProps) 
   return (
     <Card tone="warn-tint" role="group" aria-labelledby="cancel-title" className="gap-3.5">
       <h2 id="cancel-title" ref={headingRef} tabIndex={-1} className="text-tile font-bold outline-none">
-        Möchten Sie diesen Termin absagen?
+        {t("question")}
       </h2>
-      <p>Zum Ändern sagen Sie den Termin ab und buchen einen neuen.</p>
+      <p>{t("hint")}</p>
       <ErrorNote message={error} />
       <Button variant="danger-outline" onClick={cancel} disabled={pending}>
-        {pending ? "Wird abgesagt …" : "Ja, absagen"}
+        {pending ? t("confirming") : t("confirm")}
       </Button>
       <Button variant="secondary" onClick={onKeep} disabled={pending}>
-        Nein, behalten
+        {t("keep")}
       </Button>
     </Card>
   );
@@ -53,12 +57,13 @@ function CancelConfirmation({ appointmentId, onKeep }: CancelConfirmationProps) 
 
 /** «Termin ändern oder absagen» mit Inline-Bestätigung – kein Browser-Dialog. */
 export function CancelAppointment({ appointmentId }: { readonly appointmentId: string }) {
+  const t = useTranslations("appointment.cancel");
   const [confirming, setConfirming] = useState(false);
 
   if (!confirming) {
     return (
       <Button variant="text" onClick={() => setConfirming(true)}>
-        Termin ändern oder absagen
+        {t("action")}
       </Button>
     );
   }

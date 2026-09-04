@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 import { Card, PulseDot } from "@/components/ui";
 import type { Doctor } from "@/server/domain";
@@ -12,19 +13,17 @@ export interface ReviewingCardProps {
 
 /** Blaue Karte «Ihre Werte werden geprüft» mit pulsierendem Punkt – auf Übersicht und «Mein Arzt» identisch. */
 export function ReviewingCard({ doctor, headingLevel, children }: ReviewingCardProps) {
+  const t = useTranslations("doctor.reviewing");
   const Heading = headingLevel;
   return (
     <Card tone="brand-outline">
       <div className="flex items-center gap-3.5">
         <PulseDot />
         <Heading className={headingLevel === "h2" ? "text-card-title font-bold" : "text-cta font-bold"}>
-          Ihre Werte werden geprüft
+          {t("title")}
         </Heading>
       </div>
-      <p>
-        {doctor.shortName} schaut sich Ihre Werte von heute Morgen an. Sie erhalten eine Nachricht, sobald{" "}
-        {doctor.shortName} fertig ist.
-      </p>
+      <p>{t("body", { doctor: doctor.shortName })}</p>
       {children}
     </Card>
   );

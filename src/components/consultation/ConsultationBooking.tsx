@@ -1,11 +1,12 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { HospitalIcon, PhoneIcon } from "@/components/icons";
 import { Button, ErrorNote, InfoNote, OptionRow, OptionTile, StepHeading } from "@/components/ui";
-import { api, describeError } from "@/lib/api";
-import { CHANNEL_LABELS } from "@/lib/labels";
+import { api } from "@/lib/api";
+import { useErrorMessage } from "@/lib/useErrorMessage";
 import { CONSULTATION_CHANNELS, type ConsultationChannel, type Doctor } from "@/server/domain";
 import { ConsultationConfirmation, type ConfirmedConsultation } from "./ConsultationConfirmation";
 
@@ -28,14 +29,11 @@ const CHANNEL_ICONS: Readonly<Record<ConsultationChannel, React.ReactNode>> = {
   onsite: <HospitalIcon size={30} />,
 };
 
-function hintFor(channel: ConsultationChannel | null, doctor: Doctor): string {
-  return channel
-    ? CHANNEL_LABELS[channel].hint
-    : `Wählen Sie zuerst, wie Sie mit ${doctor.shortName} sprechen möchten.`;
-}
-
 export function ConsultationBooking({ doctor, slots, existing }: ConsultationBookingProps) {
   const router = useRouter();
+  const t = useTranslations("consultation");
+  const tLabels = useTranslations("labels");
+  const describeError = useErrorMessage();
   const [channel, setChannel] = useState<ConsultationChannel | null>(null);
   const [slotId, setSlotId] = useState<string | null>(null);
   const [confirmed, setConfirmed] = useState<ConfirmedConsultation | null>(existing);
@@ -44,6 +42,9 @@ export function ConsultationBooking({ doctor, slots, existing }: ConsultationBoo
   const [pending, setPending] = useState(false);
 
   const complete = channel !== null && slotId !== null;
+  const hint = channel
+    ? tLabels(`channel.${channel}.hint`, { doctor: doctor.shortName })
+    : t("chooseChannelFirst", { doctor: doctor.shortName });
 
   async function submit() {
     if (!complete) {
@@ -75,7 +76,7 @@ export function ConsultationBooking({ doctor, slots, existing }: ConsultationBoo
     <div className="flex flex-col gap-5.5">
       <section className="flex flex-col gap-3" role="radiogroup" aria-labelledby="step-channel">
         <StepHeading step={1} id="step-channel">
-          Wie möchten Sie mit {doctor.shortName} sprechen?
+          {t("stepChannel", { doctor: doctor.shortName })}
         </StepHeading>
         <div className="grid grid-cols-2 gap-2.5">
           {CONSULTATION_CHANNELS.map((option) => (
@@ -86,7 +87,7 @@ export function ConsultationBooking({ doctor, slots, existing }: ConsultationBoo
               className="min-h-26 gap-2 rounded-card text-lead"
             >
               <span className={channel === option ? "text-brand" : "text-muted"}>{CHANNEL_ICONS[option]}</span>
-              <span className={channel === option ? "font-bold" : undefined}>{CHANNEL_LABELS[option].label}</span>
+              <span className={channel === option ? "font-bold" : undefined}>{tLabels(`channel.${option}.label`)}</span>
             </OptionTile>
           ))}
         </div>
@@ -94,15 +95,15 @@ export function ConsultationBooking({ doctor, slots, existing }: ConsultationBoo
 
       <section className="flex flex-col gap-3" role="radiogroup" aria-labelledby="step-slot">
         <StepHeading step={2} id="step-slot">
-          Wann passt es Ihnen?
+          {t("stepSlot")}
         </StepHeading>
-        <p className="text-small text-muted">{doctor.shortName} hat diese Zeiten für Sie freigehalten:</p>
+        <p className="text-small text-muted">{t("slotsIntro", { doctor: doctor.shortName })}</p>
         <div className="flex flex-col gap-2.5">
           {slots.map((slot) => (
             <OptionRow
               key={slot.id}
               label={slot.dateLabel}
-              trailing={`${slot.time} Uhr`}
+              trailing={t("slotTime", { time: slot.time })}
               selected={slotId === slot.id}
               disabled={slot.taken}
               onClick={() => setSlotId(slot.id)}
@@ -112,14 +113,14 @@ export function ConsultationBooking({ doctor, slots, existing }: ConsultationBoo
         </div>
       </section>
 
-      <InfoNote>{hintFor(channel, doctor)}</InfoNote>
+      <InfoNote>{hint}</InfoNote>
 
       <ErrorNote message={error} />
 
       <Button onClick={submit} disabled={!complete || pending}>
-        {pending ? "Wird vereinbart …" : "Termin bestätigen"}
+        {pending ? t("submitting") : t("submit")}
       </Button>
-      {!complete && <p className="text-center text-small text-muted">Bitte wählen Sie Kanal und Zeit.</p>}
+      {!complete && <p className="text-center text-small text-muted">{t("incomplete")}</p>}
     </div>
   );
 }
